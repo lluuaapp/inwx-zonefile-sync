@@ -231,7 +231,7 @@ class IDNA2008Codec(IDNACodec):
         except idna.IDNAError as e:
             raise IDNAException(idna_exception=e)
 
-_escaped = bytearray(b'"().;\\@$')
+_escaped = bytearray(b'"().;$')
 
 IDNA_2003_Practical = IDNA2003Codec(False)
 IDNA_2003_Strict = IDNA2003Codec(True)

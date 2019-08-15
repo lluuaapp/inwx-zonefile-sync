@@ -8,7 +8,8 @@ import inwx.inwx
 import inwx.configuration
 import dns.zone
 
-NS = ['a.xnameserver.de', 'b.xnameserver.de', 'c.xnameserver.de', 'd.xnameserver.org', 'e.xnameserver.biz']
+
+NS = ['ns.inwx.de', 'ns2.inwx.de', 'ns3.inwx.de', 'ns4.inwx.de', 'ns5.inwx.de']
 
 def dns_name_to_text(name, dnsorigin):
 	return name.derelativize(origin=dnsorigin).to_text().rstrip('.')
@@ -145,7 +146,8 @@ def sync_zone(inwx_conn, origin, zone):
 	# update soa
 	apizonesoa = list(record for record in apizone if record['name'] == origin and record['type'] == 'SOA')[0]
 	split_apizonesoa = apizonesoa['content'].split()
-	zonesoa_rname = dns_name_to_text(list(dataset for dataset in zone['@'].rdatasets if dataset.rdtype == dns.rdatatype.SOA)[0].items[0].rname, dnsorigin)
+	# zonesoa_rname = dns_name_to_text(list(dataset for dataset in zone['@'].rdatasets if dataset.rdtype == dns.rdatatype.SOA)[0].items[0].rname, dnsorigin)
+	zonesoa_rname = list(dataset for dataset in zone['@'].rdatasets if dataset.rdtype == dns.rdatatype.SOA)[0].items[0].rname
 
 	if split_apizonesoa[0] != NS[0] or split_apizonesoa[1] != zonesoa_rname:
 		apizonesoa['content'] = "%s %s %s" % (NS[0], zonesoa_rname, split_apizonesoa[2])
