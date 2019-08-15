@@ -48,6 +48,9 @@ def dns_item_to_record(dataset, item, dnsorigin, key):
 	elif dataset.rdtype == dns.rdatatype.SSHFP:
 		record['content'] = item.to_text()
 		record['type'] = 'SSHFP'
+	elif dataset.rdtype == dns.rdatatype.CAA:
+		record['content'] = item.to_text()
+		record['type'] = 'CAA'
 	else:
 		raise Exception("Unknown item type: %r" % item)
 
@@ -79,7 +82,7 @@ def sync_zone(inwx_conn, origin, zone):
 			print(" + Deleting record from %s (%r)" % (origin, record))
 			inwx_conn.nameserver.deleteRecord({'id': record['id']})
 			continue
-		elif record['type'] not in ['A', 'AAAA', 'MX', 'SRV', 'TXT', 'CNAME', 'NS', 'PTR', 'SSHFP']:
+		elif record['type'] not in ['A', 'AAAA', 'MX', 'SRV', 'TXT', 'CNAME', 'NS', 'PTR', 'SSHFP', 'CAA']:
 			continue
 
 		found = False
